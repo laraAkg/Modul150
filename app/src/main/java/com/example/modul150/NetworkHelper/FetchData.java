@@ -3,8 +3,6 @@ package com.example.modul150.NetworkHelper;
 import android.os.AsyncTask;
 
 import com.example.modul150.Model.Product;
-import com.example.modul150.View.MainActivity;
-import com.example.modul150.View.ShoppingCartFragment;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -21,7 +19,7 @@ import java.util.List;
 public class FetchData extends AsyncTask<Void, Void, Void> {
 
     private String data;
-     private List<Product> productList;
+    private List<Product> productList;
 
     public List<Product> getProductList() {
         return productList;
@@ -46,7 +44,8 @@ public class FetchData extends AsyncTask<Void, Void, Void> {
             }
             data = data.subSequence(4, data.lastIndexOf("null")).toString();
             Gson gson = new Gson();
-            List<Product> products = gson.fromJson(data, new TypeToken<ArrayList<Product>>() {}.getType());
+            List<Product> products = gson.fromJson(data, new TypeToken<ArrayList<Product>>() {
+            }.getType());
             setProductList(products);
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -56,6 +55,18 @@ public class FetchData extends AsyncTask<Void, Void, Void> {
         return null;
     }
 
+    public List<Product> convertStringToJson(String listOfProducts) {
+/*        listOfProducts = listOfProducts.substring(1, listOfProducts.length() - 1);
+        Gson gson = new Gson();
+        List<Product> products = gson.fromJson(listOfProducts, new TypeToken<ArrayList<Product>>() {
+        }.getType()); */
+        List<Product> products = new ArrayList<>();
+        Product product = new Product(1,"Test", "123","fgauhklf", true);
+        Product product2 = new Product(1,"Test", "123","fgauhklf", true);
+        products.add(product);
+        products.add(product2);
+        return products;
+    }
 
     @Override
     protected void onPostExecute(Void aVoid) {

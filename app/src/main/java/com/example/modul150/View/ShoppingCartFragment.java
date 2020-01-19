@@ -12,22 +12,25 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
-import androidx.navigation.Navigator;
 
 import com.example.modul150.Adapter.ProductAdapter;
 import com.example.modul150.Model.Product;
-import com.example.modul150.NetworkHelper.FetchData;
 import com.example.modul150.R;
+import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ShoppingCartFragment extends Fragment {
 
-    List<Product> data;
-    List<Product> selectedProducts;
-    ListView listView;
-    Button button;
+    private List<Product> data;
+    private List<Product> selectedProducts = new ArrayList<>();
+    private ListView listView;
+    private Button button;
 
+    public List<Product> getSelectedProducts() {
+        return selectedProducts;
+    }
 
     public List<Product> getData() {
         return data;
@@ -43,7 +46,7 @@ public class ShoppingCartFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.shopping_cart, container, false);
         final ProductAdapter adapter = new ProductAdapter(this, getLayoutInflater());
         listView = rootView.findViewById(R.id.listview);
-        button = rootView.findViewById(R.id.button);
+        button = rootView.findViewById(R.id.button_delete);
         data = adapter.getProducts();
         listView.setAdapter(adapter);
         setData(data);
@@ -58,31 +61,31 @@ public class ShoppingCartFragment extends Fragment {
 
                 else
                     model.setSelected(true);
-                selectedProducts.add(getData().set(i, model));
-                getData().set(i, model);
+
+                getSelectedProducts().add(getData().set(i, model));
 
                 //now update adapter
                 adapter.updateRecords(getData());
             }
         });
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle args = new Bundle();
-
-                String[] array = new String[selectedProducts.size()];
-                int index = 0;
-                for (Object value : selectedProducts) {
-                    array[index] = (String) value;
-                    index++;
-                }
-
-
-                args.putStringArray("ARGS", array);
-                ShoppingCartFragmentDirections.ShoppingCartToShoppingCartSelection action = ShoppingCartFragmentDirections.shoppingCartToShoppingCartSelection(array);
-                Navigation.findNavController(view).navigate(action);
-            }
-        });
         return rootView;
+    }
+
+    public void sendData(View view) {
+        Gson gson = new Gson();
+
+        String a = gson.toJson("[  {    \"id\": 1,    \"product\": \"test\",    \"price\": \"12\",    \"description\": \"test\"  },  {    \"id\": 2,    \"product\": \"test2\",    \"price\": \"12\",    \"description\": \"test2\"  }]");
+
+        Bundle args = new Bundle();
+
+        args.putString("ARGS", a);
+        ShoppingCartFragmentDirections.ShoppingCartToShoppingCartSelection action = ShoppingCartFragmentDirections.shoppingCartToShoppingCartSelection(a);
+        Navigation.findNavController(view).navigate(action);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
     }
 }

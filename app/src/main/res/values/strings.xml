@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Modul150</string>
     <string name="shopping_cart">Shopping Cart</string>
+    <string name="continu">Continue</string>
+    <string name="delete">Delete</string>
+
 </resources>
