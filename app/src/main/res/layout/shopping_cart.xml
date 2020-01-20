@@ -10,29 +10,41 @@
         android:id="@+id/textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/shopping_cart"
-        android:textSize="30dp"
+        android:text="@string/products"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@id/include"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <include
+        android:id="@+id/include"
+        layout="@layout/list_view_item_description"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        app:layout_constraintBottom_toTopOf="@id/listview"
+        app:layout_constraintEnd_toEndOf="@id/listview"
+        app:layout_constraintStart_toStartOf="@id/listview"
+        app:layout_constraintTop_toBottomOf="@id/textview" />
+
     <ListView
         android:id="@+id/listview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="15dp"
+
         app:layout_constraintBottom_toTopOf="@id/button_delete"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textview" />
+        app:layout_constraintTop_toBottomOf="@id/include" />
+
 
     <Button
         android:id="@+id/button_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:onClick="sendData"
-        android:text="@string/shopping_cart"
+        android:text="@string/buy"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

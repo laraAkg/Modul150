@@ -7,35 +7,48 @@
     tools:context=".View.MainActivity">
 
     <TextView
-        android:id="@+id/textview"
+        android:id="@+id/textview_selected"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="@string/shopping_cart"
+        android:text="@string/yourProducts"
         android:textSize="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ListView
-        android:id="@+id/listview_selected"
+    <include
+        android:id="@+id/include"
+        layout="@layout/list_view_item_description"
+
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        app:layout_constraintBottom_toTopOf="@id/listview_selected"
+        app:layout_constraintEnd_toEndOf="@id/listview_selected"
+        app:layout_constraintStart_toStartOf="@id/listview_selected"
+        app:layout_constraintTop_toBottomOf="@id/textview_selected" />
+
+    <TextView
+        android:id="@+id/empty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/button_delete"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textview" />
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/textview_selected"
+        app:layout_constraintBottom_toBottomOf="@id/button_continue"
+        />
 
-    <Button
-        android:id="@+id/button_delete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:onClick="delete"
-        android:text="@string/delete"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/button_continue"
-        app:layout_constraintStart_toStartOf="parent" />
+    <ListView
+        android:id="@+id/listview_selected"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="15dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/button_continue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textview_selected" />
 
     <Button
         android:id="@+id/button_continue"
@@ -43,10 +56,9 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:text="@string/continu"
-        android:onClick="showToast"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/button_delete" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -21,71 +21,74 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Fragment of first view
+ *
+ * @author Lara Akgün
+ * @author Enma Ronquillo
+ * @version 20.01.2020
+ */
 public class ShoppingCartFragment extends Fragment {
 
-    private List<Product> data;
     private List<Product> selectedProducts = new ArrayList<>();
     private ListView listView;
     private Button button;
+    ProductAdapter adapter;
 
     public List<Product> getSelectedProducts() {
         return selectedProducts;
     }
 
-    public List<Product> getData() {
-        return data;
-    }
-
-    public void setData(List<Product> data) {
-        this.data = data;
-    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.shopping_cart, container, false);
-        final ProductAdapter adapter = new ProductAdapter(this, getLayoutInflater());
+        adapter = new ProductAdapter(this, getLayoutInflater());
         listView = rootView.findViewById(R.id.listview);
         button = rootView.findViewById(R.id.button_delete);
-        data = adapter.getProducts();
+
+        //Sets products in List
+        adapter.getProducts();
         listView.setAdapter(adapter);
-        setData(data);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                Product model = getData().get(i);
+                Product model = adapter.products.get(i);
 
-                if (model.isSelected())
+                if (model.isSelected()) {
                     model.setSelected(false);
+                    getSelectedProducts().remove(model);
+                    adapter.updateRecords(adapter.products);
 
-                else
+                } else {
                     model.setSelected(true);
+                    getSelectedProducts().add(model);
 
-                getSelectedProducts().add(getData().set(i, model));
-
-                //now update adapter
-                adapter.updateRecords(getData());
+                    //now update adapter
+                    adapter.updateRecords(adapter.products);
+                }
             }
         });
         return rootView;
     }
 
-    public void sendData(View view) {
-        Gson gson = new Gson();
-
-        String a = gson.toJson("[  {    \"id\": 1,    \"product\": \"test\",    \"price\": \"12\",    \"description\": \"test\"  },  {    \"id\": 2,    \"product\": \"test2\",    \"price\": \"12\",    \"description\": \"test2\"  }]");
-
-        Bundle args = new Bundle();
-
-        args.putString("ARGS", a);
-        ShoppingCartFragmentDirections.ShoppingCartToShoppingCartSelection action = ShoppingCartFragmentDirections.shoppingCartToShoppingCartSelection(a);
-        Navigation.findNavController(view).navigate(action);
-    }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        //Convert List into array, convert array into String
+        //Give String in navigation
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Product[] array = getSelectedProducts().toArray(new Product[getSelectedProducts().size()]);
+                Gson gson = new Gson();
+                String json = gson.toJson(array);
+                Bundle bundle = new Bundle();
+                bundle.putString("selectedProducts", json);
+                Navigation.findNavController(view).navigate(R.id.shopping_cart_to_shopping_cart_selection, bundle);
+            }
+        });
     }
 }

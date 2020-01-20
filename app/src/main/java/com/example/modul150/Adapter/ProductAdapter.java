@@ -14,27 +14,41 @@ import com.example.modul150.NetworkHelper.FetchData;
 import com.example.modul150.R;
 
 import java.util.List;
-
+/**
+ * Adapter of ListView
+ *
+ * @author Lara Akgün
+ * @author Enma Ronquillo
+ * @version 20.01.2020
+ */
 public class ProductAdapter extends BaseAdapter {
-    Fragment fragment;
-    List<Product> products;
-    LayoutInflater inflater;
+    private Fragment fragment;
+    public List<Product> products;
+    private LayoutInflater inflater;
 
     public ProductAdapter(Fragment fragment, LayoutInflater inflater) {
         this.fragment = fragment;
         this.inflater = inflater;
     }
 
-    public List<Product> getProducts() {
-        final FetchData process = new FetchData();
+    //Is getting the latest products from the DB
+    public void getProducts() {
+        final FetchData process = new FetchData(this);
         process.execute();
-        products = process.getProductList();
-        return products;
+    }
+
+    public void getSelectedProducts(List<Product> products) {
+        final FetchData process = new FetchData(this);
+        process.setProductList(products);
     }
 
     @Override
     public int getCount() {
-        return products.size();
+        if (products == null) {
+            return 0;
+        } else {
+            return products.size();
+        }
     }
 
     @Override
@@ -69,7 +83,7 @@ public class ProductAdapter extends BaseAdapter {
         Product model = products.get(i);
 
         holder.tvUserName.setText(model.getproduct());
-        holder.price.setText(model.getPrice());
+        holder.price.setText(model.getPrice() +" $");
         holder.description.setText(model.getdescription());
 
 
@@ -90,11 +104,9 @@ public class ProductAdapter extends BaseAdapter {
     }
 
     class ViewHolder {
-
         TextView tvUserName;
         TextView price;
         TextView description;
         ImageView ivCheckBox;
-
     }
 }

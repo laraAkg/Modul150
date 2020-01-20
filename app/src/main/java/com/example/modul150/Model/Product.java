@@ -1,6 +1,13 @@
 package com.example.modul150.Model;
 
-public class Product {
+/**
+ * Product Model
+ *
+ * @author Lara Akgün
+ * @author Enma Ronquillo
+ * @version 20.01.2020
+ */
+public class Product{
     private int id;
     private String product;
     private String price;

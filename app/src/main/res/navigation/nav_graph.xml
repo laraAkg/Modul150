@@ -22,8 +22,7 @@
         android:label="shopping_cart_selection"
         tools:layout="@layout/shopping_cart_selection">
         <argument
-            android:name="selectedProducts"
+            android:name="selectedProductsList"
             app:argType="string" />
-
     </fragment>
 </navigation>

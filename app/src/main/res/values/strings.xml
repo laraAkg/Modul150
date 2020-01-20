@@ -1,7 +1,12 @@
 <resources>
-    <string name="app_name">Modul150</string>
+    <string name="app_name">Buy Our Products</string>
     <string name="shopping_cart">Shopping Cart</string>
     <string name="continu">Continue</string>
     <string name="delete">Delete</string>
-
+    <string name="buy">Buy</string>
+    <string name="products">Products</string>
+    <string name="yourProducts">Your Products</string>
+    <string name="Price">Price</string>
+    <string name="description">Description</string>
+    <string name="Product">Product</string>
 </resources>

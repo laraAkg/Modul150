@@ -2,6 +2,7 @@ package com.example.modul150.NetworkHelper;
 
 import android.os.AsyncTask;
 
+import com.example.modul150.Adapter.ProductAdapter;
 import com.example.modul150.Model.Product;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -15,22 +16,30 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
-public class FetchData extends AsyncTask<Void, Void, Void> {
+/**
+ * Gets Data from API Call
+ *
+ * @author Lara Akgün
+ * @author Enma Ronquillo
+ * @version 20.01.2020
+ */
+public class FetchData extends AsyncTask<Void, Void, List<Product>> {
 
     private String data;
-    private List<Product> productList;
+    private ProductAdapter productAdapter;
 
-    public List<Product> getProductList() {
-        return productList;
+    public FetchData(ProductAdapter productAdapter) {
+        this.productAdapter = productAdapter;
     }
 
     public void setProductList(List<Product> productList) {
-        this.productList = productList;
+        this.productAdapter.updateRecords(productList);
     }
 
+    //Gets the Json from API call
+    //Converts Json into List<Products>
     @Override
-    protected Void doInBackground(Void... voids) {
+    protected List<Product> doInBackground(Void... voids) {
 
         try {
             URL url = new URL("http://10.0.2.2:8080/productList");
@@ -46,7 +55,8 @@ public class FetchData extends AsyncTask<Void, Void, Void> {
             Gson gson = new Gson();
             List<Product> products = gson.fromJson(data, new TypeToken<ArrayList<Product>>() {
             }.getType());
-            setProductList(products);
+
+            return products;
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -55,21 +65,10 @@ public class FetchData extends AsyncTask<Void, Void, Void> {
         return null;
     }
 
-    public List<Product> convertStringToJson(String listOfProducts) {
-/*        listOfProducts = listOfProducts.substring(1, listOfProducts.length() - 1);
-        Gson gson = new Gson();
-        List<Product> products = gson.fromJson(listOfProducts, new TypeToken<ArrayList<Product>>() {
-        }.getType()); */
-        List<Product> products = new ArrayList<>();
-        Product product = new Product(1,"Test", "123","fgauhklf", true);
-        Product product2 = new Product(1,"Test", "123","fgauhklf", true);
-        products.add(product);
-        products.add(product2);
-        return products;
-    }
 
     @Override
-    protected void onPostExecute(Void aVoid) {
-        super.onPostExecute(aVoid);
+    protected void onPostExecute(List<Product> products) {
+        super.onPostExecute(products);
+        setProductList(products);
     }
 }
